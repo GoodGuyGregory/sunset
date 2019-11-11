@@ -1,5 +1,6 @@
 package goodguygregory.app.sunset
 
+import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
@@ -60,9 +61,18 @@ class MainActivity : AppCompatActivity() {
 //        Scales the Object Animators values for the transition on colors with a TypeEvaluator
             sunsetSkyAnimator.setEvaluator(ArgbEvaluator())
 
-        heightAnimator.start()
-//      references animator
-        sunsetSkyAnimator.start()
+//    Builds nightSky animatior
+        val nightSkyAnimator = ObjectAnimator
+            .ofInt(skyView, "backgroundColor", sunsetSkyColor, nightSkyColor)
+            .setDuration(1500)
+        nightSkyAnimator.setEvaluator(ArgbEvaluator())
 
+//     Builds and Animator set: the AnimatorSet object will allow the specifcation of animation order
+
+        val animatorSet = AnimatorSet()
+        animatorSet.play(heightAnimator)
+            .with(sunsetSkyAnimator)
+            .before(nightSkyAnimator)
+        animatorSet.start()
     }
 }
