@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AccelerateInterpolator
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -11,6 +13,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sceneView: View
     private lateinit var sunView: View
     private lateinit var skyView: View
+
+    private val blueSkyColor: Int by lazy {
+        ContextCompat.getColor(this, R.color.blue_sky)
+    }
+    private val sunsetSkyColor: Int by lazy {
+        ContextCompat.getColor(this, R.color.sunset_sky)
+    }
+    private val nightSkyColor: Int by lazy {
+        ContextCompat.getColor(this, R.color.night_sky)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         val sunYEnd = skyView.height.toFloat()
 
         val heightAnimator = ObjectAnimator.ofFloat(sunView, "y", sunYStart, sunYEnd).setDuration(3000)
+
+//      Adds acceleration to the animation
+        heightAnimator.interpolator = AccelerateInterpolator()
 
         heightAnimator.start()
     }
