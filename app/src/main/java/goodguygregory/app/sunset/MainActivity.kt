@@ -1,5 +1,6 @@
 package goodguygregory.app.sunset
 
+import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -44,11 +45,24 @@ class MainActivity : AppCompatActivity() {
         val sunYStart = sunView.top.toFloat()
         val sunYEnd = skyView.height.toFloat()
 
-        val heightAnimator = ObjectAnimator.ofFloat(sunView, "y", sunYStart, sunYEnd).setDuration(3000)
+        val heightAnimator = ObjectAnimator
+            .ofFloat(sunView, "y", sunYStart, sunYEnd)
+            .setDuration(3000)
 
 //      Adds acceleration to the animation
         heightAnimator.interpolator = AccelerateInterpolator()
 
+//      Adds color animation to the sunset
+        val sunsetSkyAnimator = ObjectAnimator
+            .ofInt(skyView, "backgroundColor", blueSkyColor, sunsetSkyColor)
+            .setDuration(3000)
+
+//        Scales the Object Animators values for the transition on colors with a TypeEvaluator
+            sunsetSkyAnimator.setEvaluator(ArgbEvaluator())
+
         heightAnimator.start()
+//      references animator
+        sunsetSkyAnimator.start()
+
     }
 }
